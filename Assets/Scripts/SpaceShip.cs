@@ -7,6 +7,9 @@ public class SpaceShip : MonoBehaviour {
     private float speed = 1500;
     private float maxspeed = 100;
 
+    public GameObject bulletPref;
+    public Transform bulletSpawn;
+
     private int xAxis = 5;
 
     private Rigidbody rb;
@@ -39,6 +42,18 @@ public class SpaceShip : MonoBehaviour {
             rb.AddRelativeForce(Vector3.up * speed * Time.deltaTime);
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Fire();
+        }
+
 
 	}
+
+    void Fire()
+    {
+        var bullet = (GameObject)Instantiate(bulletPref, bulletSpawn.position, bulletSpawn.rotation);
+        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.forward * 6;
+        Destroy(bullet, 2.0f);
+    }
 }

@@ -12,15 +12,16 @@ public class SpaceController : MonoBehaviour {
 	}
 	
 	void Update () {
+
         asteroids = GameObject.FindGameObjectsWithTag("Asteroids");
         numbers = asteroids.Length;
 
-        if(numbers != 10)
+        if (numbers != 20)
         {
             InvokeRepeating("spawnAsteroids", 1f, 3f);
         }
 
-	}
+    }
 
     void spawnAsteroids()
     {
