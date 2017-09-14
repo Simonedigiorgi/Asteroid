@@ -2,24 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceShip : MonoBehaviour {
+public class SpaceShip : MonoBehaviour
+{
 
-    private float speed = 1500;
-    private float maxspeed = 100;
+    public Sprite shipIdle, shipMove;                                           // Sprites                                 
+    private SpriteRenderer spriteRenderer;
 
-    public GameObject bulletPref;
-    public Transform bulletSpawn;
+    private float speed = 1500, maxspeed = 100, xAxis = 5;                      // Acceleration, MaxSpeed, xAxis Rotation
 
-    private int xAxis = 5;                                       // Horizontal Rotation
+    public GameObject bulletPref;                                               // Bullet
+    public Transform bulletSpawn;                                               // Spawn Position                                                  // Horizontal Rotation
 
     private Rigidbody rb;
+    private SpaceController sc;                                                 // Calls SpaceController Script
 
-	void Start () {
+    void Start()
+    {
         rb = GetComponent<Rigidbody>();
-	}
-	
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        sc = GameObject.Find("Main Camera").GetComponent<SpaceController>();    // Get Main Camera Script        
+    }
 
-	void Update () {
+    void Update()
+    {
 
         // Input Keys
 
@@ -33,25 +38,45 @@ public class SpaceShip : MonoBehaviour {
             transform.Rotate(0, 0, xAxis);
         }
 
-        // Boost
+        // Boost and Sprite Changer
 
         if (Input.GetKey(KeyCode.Space) && rb.velocity.magnitude <= maxspeed)
         {
             rb.AddRelativeForce(Vector3.up * speed * Time.deltaTime);
+            spriteRenderer.sprite = shipMove;
         }
+        else
+        {
+            spriteRenderer.sprite = shipIdle;
+        }
+
+        // Fire Shooting
 
         if (Input.GetKeyDown(KeyCode.S))
         {
             Fire();
         }
+    }
 
-
-	}
+    // Fire Method
 
     void Fire()
     {
-        var bullet = (GameObject)Instantiate(bulletPref, bulletSpawn.position, bulletSpawn.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.forward * 6;
-        Destroy(bullet, 2.0f);
+        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.FindChild("FireSpawn").position, bulletSpawn.rotation);
+        Destroy(newBullet, 2.0f);
     }
+
+    // Destroy and Instantiate
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Asteroids")
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+            sc.spawnShip();
+        }
+    }
+
 }
+

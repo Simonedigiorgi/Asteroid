@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-	// Use this for initialization
+    private int bulletSpeed;
+
 	void Start () {
-		
+        bulletSpeed = 40;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		
+        transform.Translate(Vector2.up * bulletSpeed * Time.deltaTime);
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Asteroids")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+            Debug.Log("impact");
+        }
+    }
+
 }
