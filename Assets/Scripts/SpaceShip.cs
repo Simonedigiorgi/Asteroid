@@ -10,7 +10,7 @@ public class SpaceShip : MonoBehaviour {
     public GameObject bulletPref;
     public Transform bulletSpawn;
 
-    private int xAxis = 5;
+    private int xAxis = 5;                                       // Horizontal Rotation
 
     private Rigidbody rb;
 
@@ -25,13 +25,11 @@ public class SpaceShip : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Debug.Log("Right");
             transform.Rotate(0, 0, -xAxis);
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            Debug.Log("Left");
             transform.Rotate(0, 0, xAxis);
         }
 

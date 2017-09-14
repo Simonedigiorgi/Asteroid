@@ -9,24 +9,22 @@ public class SpaceController : MonoBehaviour {
     private Vector2 spawnPoint;
 
 	void Start () {
-	}
-	
-	void Update () {
 
         asteroids = GameObject.FindGameObjectsWithTag("Asteroids");
         numbers = asteroids.Length;
+    }
+	
+	void Update () {
 
         if (numbers != 20)
         {
             InvokeRepeating("spawnAsteroids", 1f, 3f);
         }
-
     }
 
     void spawnAsteroids()
     {
-        spawnPoint.x = Random.Range(-100, 100);
-        spawnPoint.y = Random.Range(-125, 125);
+        spawnPoint = new Vector2(Random.Range(-100, 100), Random.Range(-125, 125));
 
         Instantiate(asteroids[UnityEngine.Random.Range(0, asteroids.Length - 1)], spawnPoint, Quaternion.identity);
         CancelInvoke();

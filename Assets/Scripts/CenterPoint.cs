@@ -9,8 +9,8 @@ public class CenterPoint : MonoBehaviour {
 
 	void Start () {
 
-        speed = 1;
-        InvokeRepeating("Switch", 0f, 2f);
+        speed = 0;                                                      // Set a number value to move the CenterPoint
+        InvokeRepeating("Switch", 0f, 2f);                              
     }
 	
 	void Update () {
@@ -23,7 +23,7 @@ public class CenterPoint : MonoBehaviour {
         }
     }
 
-    void Switch()
+    void Switch()                                                       // Switch between true/false
     {
         move = !move;
     }
