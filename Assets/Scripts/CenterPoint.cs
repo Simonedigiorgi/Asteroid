@@ -5,7 +5,7 @@ using UnityEngine;
 public class CenterPoint : MonoBehaviour {
 
     private bool move;
-    private int speed;
+    private int speed;                                                  // Center Point Speed
 
 	void Start () {
 

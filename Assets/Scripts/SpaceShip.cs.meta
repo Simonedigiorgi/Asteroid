@@ -1,10 +1,18 @@
 fileFormatVersion: 2
 guid: ceb8f8359826f1f4484b04a384a310c7
-timeCreated: 1505314737
+timeCreated: 1505678483
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - shipIdle: {instanceID: 0}
+  - shipMove: {instanceID: 0}
+  - bulletPref: {fileID: 1909615900117790, guid: c48f7fb2be1552c48a485bd1d34f4c6b,
+      type: 2}
+  - bulletSpawn: {fileID: 4938945732273862, guid: 5817f5ad39ba7cb4b963d98907a4739a,
+      type: 2}
+  - fireSound: {fileID: 8300000, guid: fb5cf52420faadd4dbefdd9f68c7fa20, type: 3}
+  - extraShip: {fileID: 8300000, guid: 20fa4726fc37f334cba4bdddba501945, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

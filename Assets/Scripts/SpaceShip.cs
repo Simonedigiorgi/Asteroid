@@ -13,14 +13,18 @@ public class SpaceShip : MonoBehaviour
     public GameObject bulletPref;                                               // Bullet
     public Transform bulletSpawn;                                               // Spawn Position                                                  // Horizontal Rotation
 
+    private AudioSource audioSP;
     private Rigidbody rb;
-    private SpaceController sc;                                                 // Calls SpaceController Script
+    private GameManager GM;                                                     // Calls GameManager Script
+
+    public AudioClip fireSound;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        sc = GameObject.Find("Main Camera").GetComponent<SpaceController>();    // Get Main Camera Script        
+        GM = GameObject.Find("Main Camera").GetComponent<GameManager>();        // Get Main Camera Script    
+        audioSP = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -62,21 +66,42 @@ public class SpaceShip : MonoBehaviour
 
     void Fire()
     {
-        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.FindChild("FireSpawn").position, bulletSpawn.rotation);
+        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.Find("FireSpawn").position, bulletSpawn.rotation);
+        audioSP.PlayOneShot(fireSound);
         Destroy(newBullet, 2.0f);
     }
 
-    // Destroy and Instantiate
+    // Destroy, Instantiate, SpaceShip HUD
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Asteroids")
         {
+            // Ships and GAME OVER
+
+            if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == false && GM.lifeShip_1.enabled == true)
+            {
+                GM.lifeShip_1.enabled = false;
+                GM.txtGameOver.enabled = true;
+            }
+
+            else if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == true && GM.lifeShip_1.enabled == true)
+            {
+                GM.lifeShip_2.enabled = false;
+                GM.spawnShip();
+            }
+
+            else if (GM.lifeShip_3.enabled == true && GM.lifeShip_2.enabled == true && GM.lifeShip_1.enabled == true)
+            {
+                GM.lifeShip_3.enabled = false;
+                GM.spawnShip();
+            }
+
+            // Destroy Ship
+
             Destroy(other.gameObject);
-            Destroy(gameObject);
-            sc.spawnShip();
+            Destroy(gameObject);         
         }
     }
-
 }
 
