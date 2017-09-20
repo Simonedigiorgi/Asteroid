@@ -19,9 +19,9 @@ public class Asteroid : MonoBehaviour {
 
     void Update() {
 
-       // Move the Asteroid
+        // Move the Asteroid
 
-       transform.position = Vector3.MoveTowards(transform.position, center.position, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, center.position, speed * Time.deltaTime);
 
         // Destroy the Asteroid
 

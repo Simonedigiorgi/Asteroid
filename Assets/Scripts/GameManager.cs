@@ -21,7 +21,12 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 
-        txtGameOver.enabled = false;
+        txtGameOver.enabled = false;                                        // HUD
+
+        lifeShip_1.enabled = true;                                          // Ship Image HUD
+        lifeShip_2.enabled = true;                                          // Ship Image HUD
+        lifeShip_3.enabled = true;                                          // Ship Image HUD
+
         spawnShip();
         audioGM = GetComponent<AudioSource>();       
     }

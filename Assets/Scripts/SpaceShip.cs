@@ -19,8 +19,11 @@ public class SpaceShip : MonoBehaviour
 
     public AudioClip fireSound;
 
+    //private float timer;
+
     void Start()
     {
+        //timer = 30;
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         GM = GameObject.Find("Main Camera").GetComponent<GameManager>();        // Get Main Camera Script    
@@ -60,13 +63,24 @@ public class SpaceShip : MonoBehaviour
         {
             Fire();
         }
+
+        /*if(this.enabled == false)
+        {
+            timer -= Time.deltaTime;
+        }
+
+        if(timer <= 0)
+        {
+            this.enabled = true;
+            timer = 30;
+        }*/
     }
 
     // Fire Method
 
     void Fire()
     {
-        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.Find("FireSpawn").position, bulletSpawn.rotation);
+        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.Find("FireSpawn").position, bulletSpawn.rotation); // FireSpawn is son of SpaceShip
         audioSP.PlayOneShot(fireSound);
         Destroy(newBullet, 2.0f);
     }
@@ -77,12 +91,12 @@ public class SpaceShip : MonoBehaviour
     {
         if (other.gameObject.tag == "Asteroids")
         {
-            // Ships and GAME OVER
+            // Ships UI and GAME OVER
 
             if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == false && GM.lifeShip_1.enabled == true)
             {
                 GM.lifeShip_1.enabled = false;
-                GM.txtGameOver.enabled = true;
+                GM.txtGameOver.enabled = true;                                    // Show Game Over text
             }
 
             else if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == true && GM.lifeShip_1.enabled == true)
@@ -99,8 +113,9 @@ public class SpaceShip : MonoBehaviour
 
             // Destroy Ship
 
-            Destroy(other.gameObject);
-            Destroy(gameObject);         
+            Destroy(other.gameObject);                                            // Destroy the Asteroid
+            Destroy(gameObject);                                                  // Destroy the ship
+            //this.enabled = false;
         }
     }
 }
