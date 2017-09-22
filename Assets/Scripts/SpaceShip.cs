@@ -19,20 +19,24 @@ public class SpaceShip : MonoBehaviour
 
     public AudioClip fireSound;
 
-    //private float timer;
+    private bool isLife3;                                                       // HUD bool Ship
+    private bool isLife2;                                                       // HUD bool Ship
+    private bool isLife1;                                                       // HUD bool Ship
 
     void Start()
     {
-        //timer = 30;
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         GM = GameObject.Find("Main Camera").GetComponent<GameManager>();        // Get Main Camera Script    
         audioSP = GetComponent<AudioSource>();
+
+        isLife3 = GM.lifeShip_3.enabled;
+        isLife2 = GM.lifeShip_2.enabled;
+        isLife1 = GM.lifeShip_1.enabled;
     }
 
-    void Update()
+void Update()
     {
-
         // Input Keys
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -61,28 +65,10 @@ public class SpaceShip : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Fire();
+            GameObject newBullet = Instantiate(bulletPref, bulletSpawn.Find("FireSpawn").position, bulletSpawn.rotation); // FireSpawn is son of SpaceShip
+            audioSP.PlayOneShot(fireSound);
+            Destroy(newBullet, 2.0f);
         }
-
-        /*if(this.enabled == false)
-        {
-            timer -= Time.deltaTime;
-        }
-
-        if(timer <= 0)
-        {
-            this.enabled = true;
-            timer = 30;
-        }*/
-    }
-
-    // Fire Method
-
-    void Fire()
-    {
-        GameObject newBullet = Instantiate(bulletPref, bulletSpawn.Find("FireSpawn").position, bulletSpawn.rotation); // FireSpawn is son of SpaceShip
-        audioSP.PlayOneShot(fireSound);
-        Destroy(newBullet, 2.0f);
     }
 
     // Destroy, Instantiate, SpaceShip HUD
@@ -93,30 +79,34 @@ public class SpaceShip : MonoBehaviour
         {
             // Ships UI and GAME OVER
 
-            if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == false && GM.lifeShip_1.enabled == true)
+            if (!isLife3 && !isLife2 && isLife1)
             {
                 GM.lifeShip_1.enabled = false;
-                GM.txtGameOver.enabled = true;                                    // Show Game Over text
+                GM.txtGameOver.enabled = true;                                     // Show Game Over text
             }
 
-            else if (GM.lifeShip_3.enabled == false && GM.lifeShip_2.enabled == true && GM.lifeShip_1.enabled == true)
+            else if (!isLife3 && isLife2 && isLife1)
             {
                 GM.lifeShip_2.enabled = false;
-                GM.spawnShip();
+                StartCoroutine(WaitForRespwan());
             }
 
-            else if (GM.lifeShip_3.enabled == true && GM.lifeShip_2.enabled == true && GM.lifeShip_1.enabled == true)
+            else if (isLife3 && isLife2 && isLife1)
             {
                 GM.lifeShip_3.enabled = false;
-                GM.spawnShip();
+                StartCoroutine(WaitForRespwan());
             }
 
-            // Destroy Ship
-
             Destroy(other.gameObject);                                            // Destroy the Asteroid
-            Destroy(gameObject);                                                  // Destroy the ship
-            //this.enabled = false;
+            this.enabled = false;                                                 // Disable the Ship
+            transform.position = new Vector3(2000, 0, 0);                         // Set the Ship far from the Scene
         }
+    }
+
+    IEnumerator WaitForRespwan()
+    {
+        yield return new WaitForSeconds(2);
+        GM.spawnShip();
     }
 }
 
