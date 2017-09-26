@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 
+        InvokeRepeating("spawnAsteroids", 2f, 1f);                          // Instantiate Asteroids
+
         txtGameOver.enabled = false;                                        // HUD
 
         lifeShip_1.enabled = true;                                          // Ship Image HUD
@@ -32,11 +34,6 @@ public class GameManager : MonoBehaviour {
     }
 	
 	void Update () {
-
-        for (int i = 0; i < 20; i++)
-        {
-            InvokeRepeating("spawnAsteroids", 1f, 3f);
-        }
 
     }
 
@@ -53,7 +50,6 @@ public class GameManager : MonoBehaviour {
     {
         spawnPoint = new Vector2(Random.Range(-100, 100), Random.Range(-125, 125));
         Instantiate(asteroids, spawnPoint, Quaternion.identity);
-        CancelInvoke();
     }
 
     // Spawn the Ship
